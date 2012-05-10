@@ -1,0 +1,146 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">iPhoneSimulator</Platform>
+    <ProductVersion>10.0.0</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{5998AEB9-ED20-4E1E-957B-968E3775FF9E}</ProjectGuid>
+    <ProjectTypeGuids>{6BC8ED88-2882-458C-8E55-DFD12B67127B};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
+    <OutputType>Exe</OutputType>
+    <RootNamespace>Castles</RootNamespace>
+    <AssemblyName>Castles</AssemblyName>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|iPhoneSimulator' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\iPhoneSimulator\Debug</OutputPath>
+    <DefineConstants>DEBUG;IPHONE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <ConsolePause>false</ConsolePause>
+    <MtouchDebug>true</MtouchDebug>
+    <MtouchProfiling>true</MtouchProfiling>
+    <MtouchLink>None</MtouchLink>
+    <MtouchI18n />
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|iPhoneSimulator' ">
+    <DebugType>none</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\iPhoneSimulator\Release</OutputPath>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <ConsolePause>false</ConsolePause>
+    <MtouchLink>None</MtouchLink>
+    <DefineConstants>IPHONE</DefineConstants>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|iPhone' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\iPhone\Debug</OutputPath>
+    <DefineConstants>DEBUG;IPHONE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <ConsolePause>false</ConsolePause>
+    <CodesignKey>iPhone Developer</CodesignKey>
+    <MtouchDebug>true</MtouchDebug>
+    <MtouchProfiling>true</MtouchProfiling>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|iPhone' ">
+    <DebugType>none</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\iPhone\Release</OutputPath>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <ConsolePause>false</ConsolePause>
+    <CodesignKey>iPhone Developer</CodesignKey>
+    <DefineConstants>IPHONE</DefineConstants>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="System" />
+    <Reference Include="System.Xml" />
+    <Reference Include="System.Core" />
+    <Reference Include="monotouch" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Info.plist" />
+    <None Include="Content\Textures\Catapults\AnimationsDef.xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Main.cs" />
+    <Compile Include="Game1.cs" />
+    <Compile Include="ScreenManager\ScreenManager.cs" />
+    <Compile Include="ScreenManager\GameScreen.cs" />
+    <Compile Include="ScreenManager\InputState.cs" />
+    <Compile Include="ScreenManager\MenuEntry.cs" />
+    <Compile Include="ScreenManager\MenuScreen.cs" />
+    <Compile Include="ScreenManager\PlayerIndexEventArgs.cs" />
+    <Compile Include="Screens\GameplayScreen.cs" />
+    <Compile Include="Game2.cs" />
+    <Compile Include="Factories\Constants.cs" />
+    <Compile Include="Models\Projectile.cs" />
+    <Compile Include="ScreenManager\Camera.cs" />
+    <Compile Include="Models\ExplosionAnimation.cs" />
+    <Compile Include="Factories\PrefabBodyFactory.cs" />
+    <Compile Include="Models\PrefabUserData.cs" />
+  </ItemGroup>
+  <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
+  <ItemGroup>
+    <ProjectReference Include="..\..\MonoGame\MonoGame.Framework\MonoGame.Framework.iOS.csproj">
+      <Project>{DB8508BB-9849-4CC2-BC0F-8EB5DACB3C47}</Project>
+      <Name>MonoGame.Framework.iOS</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\Farseer Physics Engine 3.3.1 Samples XNA\Farseer Physics Engine 3.3.1 Samples XNA\Farseer Physics Engine 3.3 XNA\Farseer Physics XNA IOS.csproj">
+      <Project>{7CBCF359-9701-4CC5-BB5D-1A15A539EDA5}</Project>
+      <Name>Farseer Physics XNA IOS</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="ScreenManager\" />
+    <Folder Include="Screens\" />
+    <Folder Include="Content\" />
+    <Folder Include="Content\Fonts\" />
+    <Folder Include="Content\Textures\" />
+    <Folder Include="Factories\" />
+    <Folder Include="Models\" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Content\Fonts\MenuFont.xnb" />
+    <Content Include="Content\Textures\Ammo\rock_ammo.png" />
+    <Content Include="Content\Textures\Backgrounds\blank.png" />
+    <Content Include="Content\Textures\Backgrounds\cloud1.png" />
+    <Content Include="Content\Textures\Backgrounds\cloud2.png" />
+    <Content Include="Content\Textures\Backgrounds\defeat.png" />
+    <Content Include="Content\Textures\Backgrounds\gameplay_screen.png" />
+    <Content Include="Content\Textures\Backgrounds\instructions.png" />
+    <Content Include="Content\Textures\Backgrounds\mountain.png" />
+    <Content Include="Content\Textures\Backgrounds\sky.png" />
+    <Content Include="Content\Textures\Backgrounds\title_screen.png" />
+    <Content Include="Content\Textures\Backgrounds\victory.png" />
+    <Content Include="Content\Textures\Catapults\Blue\blueDestroyed\blueCatapult_destroyed.png" />
+    <Content Include="Content\Textures\Catapults\Blue\blueFire\blueCatapult_fire.png" />
+    <Content Include="Content\Textures\Catapults\Blue\blueIdle\blueIdle.png" />
+    <Content Include="Content\Textures\Catapults\Blue\bluePullback\blueCatapult_Pullback.png" />
+    <Content Include="Content\Textures\Catapults\Fire_Miss\fire_miss.png" />
+    <Content Include="Content\Textures\Catapults\Hit_Smoke\smoke.png" />
+    <Content Include="Content\Textures\Catapults\Red\redDestroyed\redCatapult_destroyed.png" />
+    <Content Include="Content\Textures\Catapults\Red\redFire\redCatapult_fire.png" />
+    <Content Include="Content\Textures\Catapults\Red\redIdle\redIdle.png" />
+    <Content Include="Content\Textures\Catapults\Red\redPullback\redCatapult_Pullback.png" />
+    <Content Include="Content\Textures\HUD\Arrow.png" />
+    <Content Include="Content\Textures\HUD\ammoType.png" />
+    <Content Include="Content\Textures\HUD\hudBackground.png" />
+    <Content Include="Content\Textures\HUD\windArrow.png" />
+    <Content Include="Content\box.png" />
+    <Content Include="Content\ball.png" />
+    <Content Include="Content\box1.png" />
+    <Content Include="Content\box2.png" />
+    <Content Include="Content\floor.png" />
+    <Content Include="Content\pig.png" />
+    <Content Include="Content\smoke.png" />
+    <Content Include="Content\triangleL.png" />
+    <Content Include="Content\triangleR.png" />
+  </ItemGroup>
+</Project>
