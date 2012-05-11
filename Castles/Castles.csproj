@@ -67,6 +67,7 @@
   <ItemGroup>
     <None Include="Info.plist" />
     <None Include="Content\Textures\Catapults\AnimationsDef.xml" />
+    <None Include="Content\Textures\Slingshot\.DS_Store" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Main.cs" />
@@ -85,6 +86,7 @@
     <Compile Include="Models\ExplosionAnimation.cs" />
     <Compile Include="Factories\PrefabBodyFactory.cs" />
     <Compile Include="Models\PrefabUserData.cs" />
+    <Compile Include="Utils\TextureLoader.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <ItemGroup>
@@ -109,6 +111,10 @@
     <Folder Include="Content\Textures\" />
     <Folder Include="Factories\" />
     <Folder Include="Models\" />
+    <Folder Include="Content\Textures\Slingshot\" />
+    <Folder Include="Content\Textures\Wood\" />
+    <Folder Include="Utils\" />
+    <Folder Include="Content\Textures\Ice\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Content\Fonts\MenuFont.xnb" />
@@ -148,5 +154,17 @@
     <Content Include="Content\triangleR.png" />
     <Content Include="Content\font.xnb" />
     <Content Include="Content\glass.png" />
+    <Content Include="Content\Textures\Slingshot\BackLeft.png" />
+    <Content Include="Content\Textures\Slingshot\FrontLeft.png" />
+    <Content Include="Content\Textures\Wood\100x20.png" />
+    <Content Include="Content\Textures\Wood\175x20.png" />
+    <Content Include="Content\Textures\Wood\25x20.png" />
+    <Content Include="Content\Textures\Wood\50x20.png" />
+    <Content Include="Content\Textures\Wood\200x20.png" />
+    <Content Include="Content\Textures\Ice\100x20.png" />
+    <Content Include="Content\Textures\Ice\175x20.png" />
+    <Content Include="Content\Textures\Ice\200x20.png" />
+    <Content Include="Content\Textures\Ice\25x20.png" />
+    <Content Include="Content\Textures\Ice\50x20.png" />
   </ItemGroup>
 </Project>

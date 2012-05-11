@@ -36,7 +36,6 @@ namespace Castles
 	{
        
 		Random random;
-		private Texture2D _box1,_box2,_ball,_floor,_pig,_smoke,_triangleL,_triangleR;
 		private List<Body> _bodies = new List<Body> ();
 		private World _world;
 		private const float Scale = 100f;
@@ -44,20 +43,14 @@ namespace Castles
 		SpriteBatch spriteBatch;
 		Projectile _projectile;
 		DebugViewXNA DebugView;
+		Body slingShot;
+		Vector2 startPos;
 		public void LoadAssets ()
 		{
 			
 
 			// Load texture
-			_box1 = Load<Texture2D> ("box1");
-			_box2 = Load<Texture2D> ("box2");
-			_ball = Load<Texture2D> ("ball");
-			_floor = Load<Texture2D> ("floor");
-			_pig = Load<Texture2D> ("pig");
-			_smoke = Load<Texture2D> ("smoke");
-			_triangleL = Load<Texture2D> ("triangleL");
-			_triangleR = Load<Texture2D> ("triangleR");
-
+			LoadTextures();
 
 			// Create new simulation world
 			_world = new World (new Vector2 (0, 6f));
@@ -66,28 +59,59 @@ namespace Castles
 			// Define the ground
 			Constants.Initialize (ScreenManager);
 			float simulatedHeight = Constants.FloorPosition.Y / Constants.Scale;
-			float simulatedWidth = (Constants.ScreenWidth / Constants.Scale) * 4f;
+			float simulatedWidth = Constants.WorldWidth;
+			startPos = new Vector2 (1.5f, simulatedHeight - 1.5f);
 			//floor
-			BodyFactory.CreateEdge (_world, new Vector2 (0.0f, simulatedHeight), new Vector2 (simulatedWidth, simulatedHeight));
+			BodyFactory.CreateEdge (_world, new Vector2 (0.0f, simulatedHeight), new Vector2 (simulatedWidth* 2, simulatedHeight));
 			//ceiling
-			BodyFactory.CreateEdge (_world, new Vector2 (0.0f, -simulatedHeight), new Vector2 (simulatedWidth, -simulatedHeight));
+			BodyFactory.CreateEdge (_world, new Vector2 (0.0f, -simulatedHeight), new Vector2 (simulatedWidth * 2, -simulatedHeight));
 			//right wall
 			BodyFactory.CreateEdge (_world, new Vector2 (simulatedWidth, simulatedHeight), new Vector2 (simulatedWidth, -simulatedHeight));
 			//left wall
 			BodyFactory.CreateEdge (_world, new Vector2 (0, -simulatedHeight), new Vector2 (0.0f,simulatedHeight));
 			
 			//Create 2 boxes
-			Body box1 = PrefabBodyFactory.CreateBody (PrefabType.GoldBox, _world, new Vector2 (6 - 2, simulatedHeight - .5f));
+			Body box1 = PrefabBodyFactory.CreateBody (PrefabType.GoldBox, _world, new Vector2 (simulatedWidth - 3.6f, simulatedHeight - .5f));
 			box1.Mass = 2;
-			box1.IsStatic = true;
+			//box1.IsStatic = true;
 			_bodies.Add (box1);
-			Body box2 = PrefabBodyFactory.CreateBody (PrefabType.GrayBox, _world, new Vector2 (6.0f - 2, simulatedHeight-1.6f));
+			
+			
+			Body box4 = PrefabBodyFactory.CreateBody (PrefabType.GoldBox, _world, new Vector2 (simulatedWidth - 2, simulatedHeight - .5f));
+			box4.Mass = 2;
+			//box4.IsStatic = true;
+			_bodies.Add (box4);
+			
+			_bodies.Add(PrefabBodyFactory.CreateBody(PrefabType.Wood200x20,_world,new Vector2(simulatedWidth - 2.8f,simulatedHeight - .9f)));
+			var woodVert1 =PrefabBodyFactory.CreateBody(PrefabType.Wood200x20,_world,new Vector2(simulatedWidth - 2f,simulatedHeight - 1.9f));
+			woodVert1.Rotation = MathHelper.ToRadians(90f);
+			//woodVert1.IsStatic = true;
+			_bodies.Add(woodVert1);
+			
+			
+			var woodVert2 =PrefabBodyFactory.CreateBody(PrefabType.Wood200x20,_world,new Vector2(simulatedWidth - 3.6f,simulatedHeight - 1.9f));
+			woodVert2.Rotation = MathHelper.ToRadians(90f);
+			//woodVert2.IsStatic = true;
+			_bodies.Add(woodVert2);
+			
+			
+			_bodies.Add(PrefabBodyFactory.CreateBody(PrefabType.Wood200x20,_world,new Vector2(simulatedWidth - 2.8f,woodVert1.Position.Y - 1f)));
+			
+			/*
+			
+			Body box2 = PrefabBodyFactory.CreateBody (PrefabType.GrayBox, _world, new Vector2 (simulatedWidth - 2, simulatedHeight-2f));
 			_bodies.Add (box2);
-			Body box3 = PrefabBodyFactory.CreateBody (PrefabType.GrayBox, _world, new Vector2 (6.0f - 2, simulatedHeight-2f));
+			Body box3 = PrefabBodyFactory.CreateBody (PrefabType.GrayBox, _world, new Vector2 (simulatedWidth - 2, simulatedHeight-2.4f));
 			_bodies.Add (box3);
-			Body pig = PrefabBodyFactory.CreateBody (PrefabType.Ball, _world, new Vector2 (1.6f, 1.9f));
+			*/
+			Body pig = PrefabBodyFactory.CreateBody (PrefabType.Ball, _world, startPos);
 			_bodies.Add (pig);
 			
+			/*
+			slingShot = BodyFactory.CreateRectangle(_world,.38f,1.5f,1f);
+			slingShot.Position = new Vector2( 3f,simulatedHeight - .75f);
+			_bodies.Add(slingShot);
+			*/
             pig.FixtureList[0].Restitution = .4f;
 			
 			_projectile = new Projectile (pig);
@@ -113,6 +137,35 @@ namespace Castles
 			Camera.Current.StartTracking (_projectile.Body);
 			Camera.Current.ScreenScale = ScreenManager.ScreenScale;
 			
+		}
+		
+		private void LoadTextures()
+		{
+			TextureLoader.Load(this,PrefabType.Pig);
+			TextureLoader.Load(this,PrefabType.Ball);
+			TextureLoader.Load(this,PrefabType.GoldBox);
+			TextureLoader.Load(this,PrefabType.GrayBox);
+			TextureLoader.Load(this,PrefabType.Smoke);
+			TextureLoader.Load(this,PrefabType.TriangleLeft);
+			TextureLoader.Load(this,PrefabType.TriangleRight);
+			TextureLoader.Load(this,PrefabType.Wood100x20);
+			TextureLoader.Load(this,PrefabType.Wood175x20);
+			TextureLoader.Load(this,PrefabType.Wood200x20);
+			TextureLoader.Load(this,PrefabType.Wood50x20);
+			TextureLoader.Load(this,PrefabType.Wood25x20);
+			TextureLoader.Load(this,PrefabType.Floor);
+			/*
+			_box1 = Load<Texture2D> ("box1");
+			_box2 = Load<Texture2D> ("box2");
+			_ball = Load<Texture2D> ("ball");
+			_floor = Load<Texture2D> ("floor");
+			_pig = Load<Texture2D> ("pig");
+			_smoke = Load<Texture2D> ("smoke");
+			_triangleL = Load<Texture2D> ("triangleL");
+			_triangleR = Load<Texture2D> ("triangleR");
+			_slingShotBack = Load<Texture2D> ("Textures/Slingshot/BackLeft.png");
+			_slingShotFront = Load<Texture2D> ("Textures/Slingshot/FrontLeft.png");
+			*/
 		}
 
 		public GameplayScreen ()
@@ -202,7 +255,9 @@ namespace Castles
 
 			_world.Step (Math.Min ((float)gameTime.ElapsedGameTime.TotalSeconds, (1f / 30f)));
 			
-           
+           	if(!_projectile.Body.Awake && !_projectile.IsBeingDragged)
+				_projectile.Body.Position = startPos;
+				
 			base.Update (gameTime, otherScreenHasFocus, coveredByOtherScreen);
 		}
 
@@ -240,7 +295,7 @@ namespace Castles
                             // calculate the difference between the two and use that to alter the scale
                             float scaleChange = (d - dOld) * .01f;
                             Camera.Current.AddScale (scaleChange);
-						Console.WriteLine(Camera.Current.Scale);
+						//Console.WriteLine(Camera.Current.Scale);
                         }
                         break;
                 }
@@ -257,42 +312,28 @@ namespace Castles
 			// TODO: Display pause screen
 		}
 
-		public Texture2D GetTexture (string name)
-		{
-			switch (name) {
-			case "ball":
-				return _ball;
-			case "box1":
-				return _box1;
-			case "box2":
-				return _box2;
-			case "pig":
-				return _pig;
-			case "smoke":
-				return _smoke;
-			case "triangleL":
-				return _triangleL;
-			case "triangleR":
-				return _triangleR;
-			}
-			return _box1;
-		}
-
 		public override void Draw (GameTime gameTime)
 		{
 			
 			GraphicsDevice.Clear (Color.CornflowerBlue);
 		
 			spriteBatch.Begin (0, null, null, null, null, null, Camera.Current.TransformationMatrix);
+			/*
+			spriteBatch.Draw (_slingShotBack,
+					 slingShot.Position * Constants.Scale, null, Color.White, slingShot.Rotation, new Vector2(.19f,1.2f) * Constants.Scale, 1f,
+											   SpriteEffects.None, 0f);
+			*/
 			foreach (var body in _bodies)
 			{
-				var prefabUserData = (PrefabUserData) body.UserData;
-			
-				prefabUserData.Draw(gameTime, spriteBatch, GetTexture (prefabUserData.SpriteName),_smoke, body);
+				var prefabUserData = body.UserData as PrefabUserData;
+				if(prefabUserData == null)
+					continue;
+				prefabUserData.Draw(gameTime, spriteBatch, body);
 			}
 			Vector2 floorPosition = Constants.FloorPosition;
 			for(int i = 0;i < 10; i++)
 			{
+				var _floor = TextureLoader.GetTexture(PrefabType.Floor);
 				spriteBatch.Draw (
 					_floor,
 					floorPosition,
@@ -301,12 +342,16 @@ namespace Castles
 					);
 				floorPosition += new Vector2(_floor.Bounds.Width,0);
 			}
-			
-			
+			//Draw slingshot
+			/*
+			spriteBatch.Draw (_slingShotFront,
+					 slingShot.Position * Constants.Scale, null, Color.White, slingShot.Rotation, new Vector2(.47f,1.3f) * Constants.Scale, 1f,
+											   SpriteEffects.None, 0f);
+			*/
 			
 			if (_projectile.IsBeingDragged) {
 				PrefabUserData userData = ((PrefabUserData)_projectile.Body.UserData);
-				var texture = GetTexture (userData.SpriteName);
+				var texture = TextureLoader.GetTexture(userData.PrefabType);
 				spriteBatch.Draw (
 					texture,
 					_projectile.DragPosition * Constants.Scale,
@@ -326,7 +371,7 @@ namespace Castles
                                                              1f);
             
 			var view = Camera.Current.DebugView;
-			Console.WriteLine(Camera.Current.CameraCenter/ Scale);
+			//Console.WriteLine(Camera.Current.CameraCenter/ Scale);
             DebugView.RenderDebugData(ref projection, ref view);
 			
 			base.Draw (gameTime);

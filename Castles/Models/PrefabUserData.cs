@@ -34,8 +34,8 @@ namespace Castles
 		public BodyStatus Status { get; set; }
 
 		public bool IsProjectile { get; set; }
-
-		public string SpriteName { get; set; }
+		
+		public PrefabType PrefabType {get;set;}
 
 		public Vector2 Origin { get; set; }
 
@@ -54,16 +54,16 @@ namespace Castles
 			body.Dispose();
 		}
 		
-		public void Draw (GameTime gameTime, SpriteBatch spriteBatch, Texture2D bodyTexture,Texture2D explosionTexture, Body body)
+		public void Draw (GameTime gameTime, SpriteBatch spriteBatch, Body body)
 		{
 			switch (Status) {
 			case BodyStatus.Active:
-				spriteBatch.Draw (bodyTexture,
+				spriteBatch.Draw (TextureLoader.GetTexture(PrefabType),
 					 body.Position * Constants.Scale, null, Color.White, body.Rotation, Origin * Constants.Scale, 1f,
 											   SpriteEffects.None, 0f);
 				break;
 			case BodyStatus.Destroyed:
-				ExplosionAnimation.Draw (spriteBatch, explosionTexture, gameTime);
+				ExplosionAnimation.Draw (spriteBatch, TextureLoader.GetTexture(PrefabType.Smoke), gameTime);
 				break;
 			default:
 				return;

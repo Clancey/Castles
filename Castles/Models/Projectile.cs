@@ -75,7 +75,7 @@ namespace Castles
 					//Console.WriteLine((Position - touchPositionSim).Length());
 					if ((Position - touchPositionSim).Length() < TouchRadius && !IsBeingDragged)
 					{
-						Console.WriteLine("touched");
+						//Console.WriteLine("touched");
 						//start dragging the projectile, ready to shoot
 						IsBeingDragged = true;
 						//user never clicks dead-center on the projectile, this is the offset of the click compared to the center
@@ -89,7 +89,7 @@ namespace Castles
 				}
 				else if (touchLocation.State == TouchLocationState.Moved && IsBeingDragged && touchLocation.Id == _touchId)
 				{
-						Console.WriteLine("moved");
+					///	Console.WriteLine("moved");
 					Vector2 pullPosition = touchPositionSim + _touchOffsetFromCenter;
 					Vector2 dragVector = Position - pullPosition;
 				
@@ -120,7 +120,7 @@ namespace Castles
 		
 		private void Launch()
 		{
-			Console.WriteLine("launced");
+			//Console.WriteLine("launced");
 			Camera.Current.StartTracking(this.Body);
 			_touchId = 0;
 			IsBeingDragged = false;

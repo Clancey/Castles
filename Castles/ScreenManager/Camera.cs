@@ -79,7 +79,7 @@ namespace Castles
 		private float Clamp (float value)
 		{
 			// Camera's offset is not allowed to move beyond the centerpoint of our target
-			return MathHelper.Clamp (value, 0, value);// Constants.WorldWidth - Constants.ScreenWidth);
+			return MathHelper.Clamp (value, 0, (Constants.WorldWidth * Constants.Scale) - Constants.ScreenWidth);
 		}
 
 		public void StartTracking (Body body)

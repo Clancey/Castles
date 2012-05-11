@@ -42,7 +42,7 @@ namespace Castles
 			ScreenCenter = new Vector2(HalfScreenWidth,HalfScreenHeight);
 			FloorPosition = new Vector2(0, ScreenHeight * 0.875f); // = 7/8
 			FloorSize = new Vector2(ScreenWidth,ScreenHeight - FloorPosition.Y);
-			WorldWidth =  (ScreenWidth / Scale) * 4f;
+			WorldWidth =  (ScreenWidth / Scale) * 2f;
 		}
 	}
 }

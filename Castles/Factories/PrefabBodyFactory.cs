@@ -27,12 +27,24 @@ namespace Castles
 {
 	public enum PrefabType
 	{
+		Smoke,
 		GoldBox,
 		GrayBox,
 		Ball,
 		TriangleLeft,
 		TriangleRight,
 		Pig,
+		Wood200x20,
+		Wood175x20,
+		Wood100x20,
+		Wood50x20,
+		Wood25x20,
+		Ice200x20,
+		Ice175x20,
+		Ice100x20,
+		Ice50x20,
+		Ice25x20,
+		Floor,
 	}
 	/// <summary>
 /// The PrefabBodyFactory will create new Body instances with specific, predefined settings
@@ -47,12 +59,13 @@ namespace Castles
 		static PrefabBodyFactory ()
 		{
 			
-			Library.Add(PrefabType.GoldBox, (world, position) => CreateRectangle(world, position, "box1", 0.4f, 0.4f, 14));
-			Library.Add(PrefabType.GrayBox, (world, position) => CreateRectangle(world, position, "box2", 0.4f, 0.4f, 7));
-			Library.Add(PrefabType.Pig, (world, position) => CreateRectangle(world, position, "pig", 0.5f, 0.59f, 7));
-			Library.Add(PrefabType.Ball, (world, position) => CreateCircle(world, position, "ball", 0.3f));
-			Library.Add(PrefabType.TriangleLeft, (world, position) => CreateTriangleL(world, position, "triangleL", 0.4f, 0.4f, 70));
-			Library.Add(PrefabType.TriangleRight, (world, position) => CreateTriangleR(world, position, "triangleR", 0.4f, 0.4f, 70));
+			Library.Add(PrefabType.GoldBox, (world, position) => CreateRectangle(world, position, PrefabType.GoldBox, 0.4f, 0.4f, 14));
+			Library.Add(PrefabType.GrayBox, (world, position) => CreateRectangle(world, position, PrefabType.GrayBox, 0.4f, 0.4f, 7));
+			Library.Add(PrefabType.Wood200x20, (world, position) => CreateRectangle(world, position, PrefabType.Wood200x20, 2f, 0.2f, 7));
+			Library.Add(PrefabType.Pig, (world, position) => CreateRectangle(world, position, PrefabType.Pig, 0.5f, 0.59f, 7));
+			Library.Add(PrefabType.Ball, (world, position) => CreateCircle(world, position, PrefabType.Ball, 0.3f));
+			Library.Add(PrefabType.TriangleLeft, (world, position) => CreateTriangleL(world, position, PrefabType.TriangleLeft, 0.4f, 0.4f, 70));
+			Library.Add(PrefabType.TriangleRight, (world, position) => CreateTriangleR(world, position, PrefabType.TriangleRight, 0.4f, 0.4f, 70));
 		}
 		/// <summary>
 		/// Create Body of certain prefab type
@@ -76,13 +89,13 @@ namespace Castles
 		/// <param name="width">width of the body in sim-units</param>
 		/// <param name="height">height of the body in sim-units</param>
 		/// <returns>new instance of a Body</returns>
-		private static Body CreateRectangle (World world, Vector2 position, string spriteName, float width, float height, int hitPoints)
+		private static Body CreateRectangle (World world, Vector2 position, PrefabType prefabType, float width, float height, int hitPoints)
 		{
 			Body body = BodyFactory.CreateRectangle (world, width, height, 1f, position);
 			body.UserData = new PrefabUserData
 			            {
 			                Origin = new Vector2(width/2f, height/2f),
-			                SpriteName = spriteName,
+			                PrefabType = prefabType,
 							HitPoints = hitPoints,
 			            };
 			body.BodyType = BodyType.Dynamic;
@@ -97,19 +110,19 @@ namespace Castles
 		/// <param name="spriteName">Sprite name to render with</param>
 		/// <param name="radius">radius of the body in sim-units</param>
 		/// <returns>new instance of a Body</returns>
-		private static Body CreateCircle(World world, Vector2 position, string spriteName, float radius)
+		private static Body CreateCircle(World world, Vector2 position, PrefabType prefabType, float radius)
 		{
 			Body body = BodyFactory.CreateCircle(world, radius, 1f, position);
 			body.UserData = new PrefabUserData
 			{
 				Origin = new Vector2(radius),
-				SpriteName = spriteName
+				PrefabType = prefabType
 			};
 			body.AngularDamping = 2f; //without this, our ball would keep on rolling regardless of friction
 			body.BodyType = BodyType.Dynamic;
 			return body;
 		}
-		private static Body CreateTriangleL(World world, Vector2 position, string spriteName,float width,float height,int hitPoints)
+		private static Body CreateTriangleL(World world, Vector2 position, PrefabType prefabType,float width,float height,int hitPoints)
 		{
 			
 			var w = width /2;
@@ -131,13 +144,13 @@ namespace Castles
 			body.UserData = new PrefabUserData
 			            {
 			                Origin = new Vector2(width/2f, height/2f),
-			                SpriteName = spriteName,
+							PrefabType = prefabType,
 							HitPoints = hitPoints,
 			            };
 			return body;
 			            
 		}
-		private static Body CreateTriangleR(World world, Vector2 position, string spriteName,float width,float height,int hitPoints)
+		private static Body CreateTriangleR(World world, Vector2 position, PrefabType prefabType,float width,float height,int hitPoints)
 		{
 			/*
 			 
@@ -168,7 +181,7 @@ namespace Castles
 			body.UserData = new PrefabUserData
 			            {
 			                Origin = new Vector2(width/2f, height/2f),
-			                SpriteName = spriteName,
+							PrefabType = prefabType,
 							HitPoints = hitPoints,
 			            };
 			return body;
