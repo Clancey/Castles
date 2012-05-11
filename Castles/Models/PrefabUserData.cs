@@ -50,11 +50,12 @@ namespace Castles
 		{
 			Status = BodyStatus.Destroyed;
 			ExplosionAnimation.Activate (body);
+			//body.DestroyFixture();
+			body.Dispose();
 		}
 		
 		public void Draw (GameTime gameTime, SpriteBatch spriteBatch, Texture2D bodyTexture,Texture2D explosionTexture, Body body)
 		{
-			
 			switch (Status) {
 			case BodyStatus.Active:
 				spriteBatch.Draw (bodyTexture,

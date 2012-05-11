@@ -57,21 +57,29 @@ namespace Castles
 		{
 			if (_trackingBody != null) {
 				// if tracking body is not located in the center of the view (half screen width + current offset)
-				if (CenterPoint.X * Scale != (Constants.HalfScreenWidth /_scale) + _offsetX) {
+				//if (CenterPoint.X * Scale != (Constants.HalfScreenWidth /_scale) + _offsetX) {
 					// move camera's offset so tracking body is dead center again
 					_offsetX = Clamp (CenterPoint.X * Constants.Scale - Constants.HalfScreenWidth);
-				}
+				//}
 				_offsetY =  (Constants.FloorPosition.Y + Constants.FloorSize.Y) - (Constants.ScreenHeight / _scale) ;
 			}
 			
 			TransformationMatrix = Matrix.CreateTranslation (-_offsetX, -_offsetY, 0f) * Matrix.CreateScale(Scale);
 			//Matrix.CreateScale(.5f);
 		}
+		public Matrix DebugView
+		{
+			get{return Matrix.CreateTranslation (-_offsetX/Constants.Scale, -_offsetY/Constants.Scale, 0f)* Matrix.CreateScale(Scale);}
+		}
+		public Vector2 CameraCenter
+		{
+			get {return new Vector2(0,-0);}
+		}
 
 		private float Clamp (float value)
 		{
 			// Camera's offset is not allowed to move beyond the centerpoint of our target
-			return MathHelper.Clamp (value, 0,  (3f  * Constants.ScreenWidth )/ _scale);
+			return MathHelper.Clamp (value, 0, value);// Constants.WorldWidth - Constants.ScreenWidth);
 		}
 
 		public void StartTracking (Body body)

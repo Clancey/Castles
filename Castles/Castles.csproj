@@ -96,6 +96,10 @@
       <Project>{7CBCF359-9701-4CC5-BB5D-1A15A539EDA5}</Project>
       <Name>Farseer Physics XNA IOS</Name>
     </ProjectReference>
+    <ProjectReference Include="..\..\Farseer Physics Engine 3.3.1 Samples XNA\Farseer Physics Engine 3.3.1 Samples XNA\DebugView XNA\DebugViewMonoGameIos.csproj">
+      <Project>{91DB554B-E707-491B-AF73-D173A8374E8F}</Project>
+      <Name>DebugViewMonoGameIos</Name>
+    </ProjectReference>
   </ItemGroup>
   <ItemGroup>
     <Folder Include="ScreenManager\" />
@@ -142,5 +146,7 @@
     <Content Include="Content\smoke.png" />
     <Content Include="Content\triangleL.png" />
     <Content Include="Content\triangleR.png" />
+    <Content Include="Content\font.xnb" />
+    <Content Include="Content\glass.png" />
   </ItemGroup>
 </Project>

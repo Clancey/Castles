@@ -26,20 +26,23 @@ namespace Castles
 		public static float HalfScreenHeight { get; private set; }
 		public static float ScreenWidth { get; private set; }
 		public static float ScreenHeight { get; private set; }
+		public static float WorldWidth {get;private set;}
 		public static Vector2 FloorPosition { get; private set;}
 		public static Vector2 FloorSize {get;private set;}
+		public static Vector2 ScreenCenter{get;private set;}
 	
 		public static void Initialize(ScreenManager screenManager)
 		{
 			var width = screenManager.GraphicsDevice.Viewport.Width;
 			var height = screenManager.GraphicsDevice.Viewport.Height;
-			var graphics = screenManager.GraphicsDevice;
 			ScreenWidth = width / screenManager.ScreenScale;
 			ScreenHeight = height / screenManager.ScreenScale;
 			HalfScreenWidth = ScreenWidth / 2f;
 			HalfScreenHeight = ScreenHeight / 2f;
+			ScreenCenter = new Vector2(HalfScreenWidth,HalfScreenHeight);
 			FloorPosition = new Vector2(0, ScreenHeight * 0.875f); // = 7/8
 			FloorSize = new Vector2(ScreenWidth,ScreenHeight - FloorPosition.Y);
+			WorldWidth =  (ScreenWidth / Scale) * 4f;
 		}
 	}
 }

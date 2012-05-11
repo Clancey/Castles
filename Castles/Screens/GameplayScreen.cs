@@ -26,6 +26,7 @@ using FarseerPhysics.Factories;
 using FarseerPhysics.Dynamics.Contacts;
 using FarseerPhysics.Collision;
 using FarseerPhysics.Controllers;
+using FarseerPhysics.DebugViews;
 
 #endregion
 
@@ -42,6 +43,7 @@ namespace Castles
 		GraphicsDevice GraphicsDevice;
 		SpriteBatch spriteBatch;
 		Projectile _projectile;
+		DebugViewXNA DebugView;
 		public void LoadAssets ()
 		{
 			
@@ -65,9 +67,14 @@ namespace Castles
 			Constants.Initialize (ScreenManager);
 			float simulatedHeight = Constants.FloorPosition.Y / Constants.Scale;
 			float simulatedWidth = (Constants.ScreenWidth / Constants.Scale) * 4f;
+			//floor
 			BodyFactory.CreateEdge (_world, new Vector2 (0.0f, simulatedHeight), new Vector2 (simulatedWidth, simulatedHeight));
-			BodyFactory.CreateEdge (_world, new Vector2 (simulatedWidth, simulatedHeight), new Vector2 (simulatedWidth, 0.0f));
-			BodyFactory.CreateEdge (_world, new Vector2 (0, 0), new Vector2 (0.0f,simulatedHeight));
+			//ceiling
+			BodyFactory.CreateEdge (_world, new Vector2 (0.0f, -simulatedHeight), new Vector2 (simulatedWidth, -simulatedHeight));
+			//right wall
+			BodyFactory.CreateEdge (_world, new Vector2 (simulatedWidth, simulatedHeight), new Vector2 (simulatedWidth, -simulatedHeight));
+			//left wall
+			BodyFactory.CreateEdge (_world, new Vector2 (0, -simulatedHeight), new Vector2 (0.0f,simulatedHeight));
 			
 			//Create 2 boxes
 			Body box1 = PrefabBodyFactory.CreateBody (PrefabType.GoldBox, _world, new Vector2 (6 - 2, simulatedHeight - .5f));
@@ -80,6 +87,8 @@ namespace Castles
 			_bodies.Add (box3);
 			Body pig = PrefabBodyFactory.CreateBody (PrefabType.Ball, _world, new Vector2 (1.6f, 1.9f));
 			_bodies.Add (pig);
+			
+            pig.FixtureList[0].Restitution = .4f;
 			
 			_projectile = new Projectile (pig);
 			
@@ -103,6 +112,7 @@ namespace Castles
 			Camera.Current.CenterPointTarget = 620f;
 			Camera.Current.StartTracking (_projectile.Body);
 			Camera.Current.ScreenScale = ScreenManager.ScreenScale;
+			
 		}
 
 		public GameplayScreen ()
@@ -127,6 +137,10 @@ namespace Castles
 			GraphicsDevice = ScreenManager.GraphicsDevice;
 			// Start the game
 			Start ();
+			
+			
+            DebugView = new DebugViewXNA(_world);
+            DebugView.LoadContent(GraphicsDevice,ScreenManager.Game.Content);
 		}
 
 		void Start ()
@@ -270,7 +284,6 @@ namespace Castles
 			GraphicsDevice.Clear (Color.CornflowerBlue);
 		
 			spriteBatch.Begin (0, null, null, null, null, null, Camera.Current.TransformationMatrix);
-			
 			foreach (var body in _bodies)
 			{
 				var prefabUserData = (PrefabUserData) body.UserData;
@@ -286,7 +299,7 @@ namespace Castles
 					null,
 					Color.White
 					);
-				floorPosition += new Vector2(Constants.FloorSize.X,0);
+				floorPosition += new Vector2(_floor.Bounds.Width,0);
 			}
 			
 			
@@ -307,8 +320,14 @@ namespace Castles
 			}
 			
 			spriteBatch.End ();
-		
-			
+			  // calculate the projection and view adjustments for the debug view
+            Matrix projection = Matrix.CreateOrthographicOffCenter(0f, GraphicsDevice.Viewport.Width / Scale,
+                                                             GraphicsDevice.Viewport.Height / Scale, 0f, 0f,
+                                                             1f);
+            
+			var view = Camera.Current.DebugView;
+			Console.WriteLine(Camera.Current.CameraCenter/ Scale);
+            DebugView.RenderDebugData(ref projection, ref view);
 			
 			base.Draw (gameTime);
 			return;
